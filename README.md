@@ -4,6 +4,7 @@ Steps to run:
 1- Have docker installed
 2- Navigate to root project folder
 3- Run 'docker-compose up'
+4- Add Exchangeratesapi key to config/keys  -  https://app.exchangerate-api.com/
 
 Steps to test:
 ???

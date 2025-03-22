@@ -1,11 +1,20 @@
 <?php
-
 require_once 'vendor/autoload.php';
 
-use Src\Service\DataImporter;
+use Src\Controller\ProcessCommissions;
+use Src\Service\ExchangeRates;
 
-DataImporter::importData();
+$pc = new ProcessCommissions;
+
+ExchangeRates::fetch();
 
 
+
+// Helper function for dumping
+function pre($q) {
+    echo '<pre>';
+    print_r($q);
+    echo '</pre>';
+}
 
 

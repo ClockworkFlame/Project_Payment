@@ -1,16 +1,16 @@
 {
-    "name": "paysera/commission-task-skeleton",
-    "description": "Skeleton for Paysera recruitment task",
+    "name": "paymentfee",
+    "description": "Skeleton for paymentfee recruitment task",
     "keywords": [],
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Paysera\\CommissionTask\\": "src"
+            "paymentfee\\CommissionTask\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Paysera\\CommissionTask\\Tests\\": "tests"
+            "paymentfee\\CommissionTask\\Tests\\": "tests"
         }
     },
     "require": {

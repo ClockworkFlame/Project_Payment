@@ -1,14 +1,13 @@
 <?php
+session_start();
 require_once 'vendor/autoload.php';
 
 use Src\Controller\ProcessCommissions;
-use Src\Service\ExchangeRates;
+use Src\Service\CurrencyConverter;
 
 $pc = new ProcessCommissions;
 
-ExchangeRates::fetch();
-
-
+// pre(CurrencyConverter::convertToEuro('USD', 100));
 
 // Helper function for dumping
 function pre($q) {

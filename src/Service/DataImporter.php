@@ -24,4 +24,27 @@ class DataImporter implements DataImporterInterface
 
         return $csv_data;
     }
+
+    // Adds an internal array index to each row. Either this or making a whole ORM which Id rather not.
+    public static function indexArray(array $array):array {
+        foreach($array as $key => $row) {
+            $array[$key]['id'] = $key;
+        }
+        return $array;
+    }
+
+    // Exports user data from CSV. That is, assuming that a user can be EITHER private or public.
+    public static function importUserData():array {
+        $data = self::importData();
+
+        $user_data = [];
+        foreach($data as $row) {
+            $user_data[$row[1]] = [
+                'id' => $row[1],
+                'type' => $row[2],
+            ];
+        }
+
+        return $user_data;
+    }
 }

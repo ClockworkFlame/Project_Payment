@@ -1,7 +1,11 @@
 <?php
 
-use Src\Controller\VendingMachine;
-use Src\Module\Display;
-use Src\Enum\Currency;
+require_once 'vendor/autoload.php';
 
-include __DIR__ . '/vendor/autoload.php';
+use Src\Service\DataImporter;
+
+DataImporter::importData();
+
+
+
+

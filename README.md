@@ -1,11 +1,13 @@
-# paymentfee Commission task skeleton
+Dockerized it cause why not.
 
-Following steps:
-- don't forget to change `paymentfee` namespace and package name in `composer.json`
- to your own, as `paymentfee` keyword should not be used anywhere in your task;
-- `\paymentfee\CommissionTask\Service\Math` is an example class provided for the skeleton and could or could not be used by your preference;
-- needed scripts could be found inside `composer.json`;
-- before submitting the task make sure that all the scripts pass (`composer run test` in particular);
-- this file should be updated before submitting the task with the documentation on how to run your program.
+Steps to run:
+1- Have docker installed
+2- Navigate to root project folder
+3- Run 'docker-compose up'
 
-Good luck! :) 
+Steps to test:
+???
+
+Notes:
+- Removed friendsofphp/php-cs-fixer package as its not compatible with PHP ^8.0
+- Changed used PHPUnit version to 9, same issue as ^^^

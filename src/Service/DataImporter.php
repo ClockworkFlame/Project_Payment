@@ -1,7 +1,9 @@
 <?php
 namespace Src\Service;
 
-class DataImporter
+use Src\Interface\DataImporter as DataImporterInterface;
+
+class DataImporter implements DataImporterInterface
 {
     const FILENAME = 'input.csv'; // Dont want to hardcode but its just an test app.
 
@@ -10,10 +12,16 @@ class DataImporter
             throw new \Exception('CSV file not found');
         }
 
-        if(empty(($csv = str_getcsv(file_get_contents('input.csv'), escape:"\\")))){
+        $handle = fopen('input.csv','r');
+        $csv_data = [];
+        while(($data = fgetcsv($handle, escape:"\\") ) !== FALSE ) {
+            $csv_data[] = $data;
+        }
+
+        if(empty($csv_data)){
             throw new \Exception('CSV file empty');
         }
 
-        return $csv;
+        return $csv_data;
     }
 }

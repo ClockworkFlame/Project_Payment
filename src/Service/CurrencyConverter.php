@@ -6,7 +6,6 @@ class CurrencyConverter
     // Limiting usage just to euro due to this being just a side-service to the test app.
     public static function convertToEuro(string $currency, float $amount): float {
         $rates = self::getRates();
-        pre($rates[$currency]);
 
         if(empty($rates[$currency])){
             throw new \Exception("Currency $currency doesnt exist in exchange table");

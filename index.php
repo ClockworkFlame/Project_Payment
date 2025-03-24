@@ -3,7 +3,6 @@ session_start();
 require_once 'vendor/autoload.php';
 
 use Src\Controller\ProcessCommissions;
-use Src\Service\CurrencyConverter;
 
 $pc = new ProcessCommissions;
 

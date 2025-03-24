@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace paymentfee\CommissionTask\Service;
+namespace Src\Service;
 
 class Math
 {

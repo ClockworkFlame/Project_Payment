@@ -6,8 +6,6 @@ use Src\Controller\ProcessCommissions;
 
 $pc = new ProcessCommissions;
 
-// pre(CurrencyConverter::convertToEuro('USD', 100));
-
 // Helper function for dumping
 function pre($q) {
     echo '<pre>';

@@ -1,14 +1,14 @@
 Dockerized it cause why not.
 
 Steps to run:
-1- Have docker installed
-2- Navigate to root project folder
-3- Run 'docker-compose up'
-4- Navigate to http://localhost:8080/ OR run though command line 'php index.php'
-5- Optional. Project uses hardcoded values for exchange rates. Add Exchangeratesapi key to config/keys.ini to use live exchange - https://app.exchangerate-api.com/
+- Have docker installed
+- Navigate to root project folder
+- Run 'docker-compose up'
+- Navigate to http://localhost:8080/ OR run though command line 'php index.php'
+- Optional. Project uses hardcoded values for exchange rates. Add Exchangeratesapi key to config/keys.ini to use live exchange - https://app.exchangerate-api.com/
 
 Steps to test:
-1 - Run './vendor/phpunit/phpunit/phpunit' from project root
+ - Run './vendor/phpunit/phpunit/phpunit' from project root
 
 Notes:
 - Removed friendsofphp/php-cs-fixer package as its not compatible with PHP ^8.0

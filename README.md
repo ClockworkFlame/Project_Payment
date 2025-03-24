@@ -1,6 +1,7 @@
 Dockerized it cause why not.
 
 Steps to run:
+- Run 'composer install' to generate vendor and dependencies
 - Have docker installed
 - Navigate to root project folder
 - Run 'docker-compose up'

@@ -6,7 +6,7 @@ interface FeeCalculatable
 {
     const DEFAULT_CURRENCY = 'EUR';
 
-    public function getUserId():int;
-    public function getUserType():string;
-    public function getTransationHistory():array;
+    public function getTransactionHistoryForWeek(int $timestamp, string $action):array;
+
+    public function getTransactedAmountForWeekEur(int $timestamp, string $action):float;
 }

@@ -27,7 +27,7 @@ final class ProcessCommissions
                 $user_balance->transact($transaction);
             }
 
-            if(!empty(($commissions = $user_balance->getCommissions()))) {
+            if(!empty(($commissions = $user_balance->getFees()))) {
                 foreach($commissions as $commission) {
                     $this->commissions[$commission['transaction_id']] = $commission;
                 }

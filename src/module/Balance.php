@@ -30,19 +30,7 @@ final class Balance implements FeeCalculatable
         return true;
     }
 
-    public function getUserId():int {
-        return $this->user_id;
-    }
-
-    public function getUserType():string {
-        return $this->user_type;
-    }
-
-    public function getTransationHistory():array {
-        return $this->transaction_history;
-    }
-
-    public function getCommissions():array {
+    public function getFees():array {
         return $this->fee_history;
     }
 

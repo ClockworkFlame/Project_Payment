@@ -20,8 +20,3 @@ final class BusinessFeeCalculator extends FeeCalculator
         return $fee;
     }
 }
-
-// Deposit rule
-//     All deposits are charged 0.03% of deposit amount.
-// Business Clients
-//     Commission fee - 0.5% from withdrawn amount.

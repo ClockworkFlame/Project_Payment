@@ -38,7 +38,6 @@ final class ProcessCommissions
     }
 
     public function printFeesHtml():void {
-        //order $this->comissions array by $this->comissions['transaction_id']
         $commissions = $this->commissions;
 
         usort($commissions, function($a, $b) {
@@ -51,7 +50,6 @@ final class ProcessCommissions
     }
 
     public function printFees():void {
-        //order $this->comissions array by $this->comissions['transaction_id']
         $commissions = $this->commissions;
 
         usort($commissions, function($a, $b) {

@@ -40,7 +40,6 @@ final class PrivateFeeCalculator extends FeeCalculator
         return $fee;
     }
 
-    // 0.3 of 368.393 = 110.5179
 
     // Calculates remaining free of fee amount for the week
     // This ALWAYS returns in Euro
@@ -49,6 +48,7 @@ final class PrivateFeeCalculator extends FeeCalculator
         $transactions_this_week = $this->balance->getTransactionHistoryForWeek($transaction->date_timestamp, $transaction->action);
         
         $weekly_free = 0.00;
+        // Calculate remaining weekly free transaction amount
         if($transaction_amount_this_week_eur < self::WEEKLY_FREE_AMOUNT ){
             if(count($transactions_this_week) < self::WEEKLY_FREE_COUNT) {
                 $weekly_free = round(self::WEEKLY_FREE_AMOUNT - $transaction_amount_this_week_eur);
@@ -58,12 +58,3 @@ final class PrivateFeeCalculator extends FeeCalculator
         return $weekly_free;
     }
 }
-
-// Deposit rule
-//     All deposits are charged 0.03% of deposit amount.
-
-// Private Clients
-//     Commission fee - 0.3% from withdrawn amount.
-//     1000.00 EUR for a week (from Monday to Sunday) is free of charge. Only for the first 3 withdraw operations per a week.
-//     If total free of charge amount is exceeded them commission is calculated only for the exceeded amount (i.e. up to 1000.00 EUR no commission fee is applied).
-//     For the second rule you will need to convert operation amount if it's not in Euros. Please use rates provided by https://api.exchangeratesapi.io/latest.

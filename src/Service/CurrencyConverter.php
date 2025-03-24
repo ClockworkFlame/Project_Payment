@@ -4,7 +4,6 @@ namespace Src\Service;
 class CurrencyConverter
 {
     const DEFAULT_CURRENCY = "EUR";
-    const USE_API = false;
     const TEST_RATES = [
         "JPY" => 129.53,
         "USD" => 1.1497,
@@ -35,8 +34,11 @@ class CurrencyConverter
 
     // Fetches rates from cache or API
     public static function getRates() {
-        if(self::USE_API === false || session_status() === PHP_SESSION_NONE || empty($_SESSION['rates'])){
-            if(self::USE_API === true){ 
+        $use_api = !empty(parse_ini_file("config/keys.ini")['exchangeragesapi']);
+
+        unset ($_SESSION['rates']);
+        if($use_api === false || session_status() === PHP_SESSION_NONE || empty($_SESSION['rates'])){
+            if($use_api === true){ 
                 $_SESSION['rates'] = self::fetchRates();
             } else {
                 $_SESSION['rates'] = self::TEST_RATES;

@@ -20,19 +20,21 @@ final class ProcessCommissions
             exit;
         }
 
-        foreach($this->csv_data as $user_id => $transations) {
-            pre($transations);
+        foreach($this->csv_data as $user_id => $transactions) {
             $user_balance = new Balance($user_id, $this->user_data[$user_id]['type']);
 
-            foreach($transations as $transation) {
-                $user_balance->transact();
+            foreach($transactions as $transaction) {
+                $user_balance->transact($transaction);
             }
 
-            foreach($user_balance->getCommissions() as $commission) {
-                $this->commissions[$commission['transaction_id']] = $commission;
+            if(!empty(($commissions = $user_balance->getCommissions()))) {
+                foreach($commissions as $commission) {
+                    $this->commissions[$commission['transaction_id']] = $commission;
+                }
             }
         }
 
+        $this->printFeesById();
     }
 
     // Not sure where to put this really... But Id rather focus on the rest of the task due to my limited time.
@@ -44,4 +46,18 @@ final class ProcessCommissions
         }
         return $return;
     }
+
+    public function printFeesById():void {
+        //order $this->comissions array by $this->comissions['transaction_id']
+        $commissions = $this->commissions;
+
+        usort($commissions, function($a, $b) {
+            return $a['transaction_id'] <=> $b['transaction_id'];
+        });
+
+        foreach($commissions as $commission) {
+            print "Transaction ID: {$commission['transaction_id']} | Fee: {$commission['amount']} {$commission['currency']}<br>";
+        }
+    }
+
 }

@@ -7,6 +7,9 @@ class DataImporter implements DataImporterInterface
 {
     const FILENAME = 'input.csv'; // Dont want to hardcode but its just an test app.
 
+    /**
+     * TODO: Verify data fits mold.
+     */
     public static function importData():array {
         if(!file_exists(self::FILENAME)) {
             throw new \Exception('CSV file not found');
@@ -28,7 +31,7 @@ class DataImporter implements DataImporterInterface
     // Adds an internal array index to each row. Either this or making a whole ORM which Id rather not.
     public static function indexArray(array $array):array {
         foreach($array as $key => $row) {
-            $array[$key]['id'] = $key;
+            $array[$key][6] = $key;
         }
         return $array;
     }

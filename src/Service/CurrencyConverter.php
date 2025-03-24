@@ -11,7 +11,7 @@ class CurrencyConverter
             throw new \Exception("Currency $currency doesnt exist in exchange table");
         }
 
-        return round(($amount * $rates["$currency"]), 3);
+        return round(($amount / $rates["$currency"]), 3);
     }
 
     public static function getRates() {

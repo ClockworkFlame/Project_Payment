@@ -39,14 +39,14 @@ Planned Schema:
     - param client_type //maybe put in user class?
     - withdraw
     - deposit
-- Abstract TaxCalculator
+- Abstract FeeCalculator
     - static calculate(Balance $balance): float
     - private meetsDailyWithdrawalCriteria
     - private meetsWithdrawnAmountCriteria
-- WithdrawTaxCalculator extends TaxCalculator (put tax conditions inside here)
-    - overrides TaxCalculator::calculateTax(Balance $balance)
-- DepositTaxCalculator extends TaxCalculator (put tax conditions inside here)
-    - overrides TaxCalculator::calculateTax(Balance $balance)
+- WithdrawTaxCalculator extends FeeCalculator (put tax conditions inside here)
+    - overrides FeeCalculator::calculateTax(Balance $balance)
+- DepositTaxCalculator extends FeeCalculator (put tax conditions inside here)
+    - overrides FeeCalculator::calculateTax(Balance $balance)
 - Singleton Display
     - param taxes [array]
-    - storeTax ($action_id, $tax_amount)
+    - addToTaxHistory ($action_id, $tax_amount)

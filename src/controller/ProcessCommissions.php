@@ -34,10 +34,10 @@ final class ProcessCommissions
             }
         }
 
-        $this->printFeesById();
+        $this->printFeesHtml();
     }
 
-    public function printFeesById():void {
+    public function printFeesHtml():void {
         //order $this->comissions array by $this->comissions['transaction_id']
         $commissions = $this->commissions;
 
@@ -46,7 +46,20 @@ final class ProcessCommissions
         });
 
         foreach($commissions as $commission) {
-            print "Transaction ID: {$commission['transaction_id']} | Fee: {$commission['fee']} {$commission['currency']} | Amount: {$commission['amount']}<br>";
+            print "Transaction ID: {$commission['transaction_id']} | Fee: " . number_format($commission['fee'], 2) . "<br>";
+        }
+    }
+
+    public function printFees():void {
+        //order $this->comissions array by $this->comissions['transaction_id']
+        $commissions = $this->commissions;
+
+        usort($commissions, function($a, $b) {
+            return $a['transaction_id'] <=> $b['transaction_id'];
+        });
+
+        foreach($commissions as $commission) {
+            echo number_format($commission['fee'], 2) . PHP_EOL;
         }
     }
 

@@ -90,7 +90,6 @@ final class Balance implements FeeCalculatable
             'fee' => $fee,
             'currency' => $transaction->currency 
         ];
-        // pre($this->fee_history);
     }
 
     // Record past transactions as an array so we can calculate fees later on in an optimized way

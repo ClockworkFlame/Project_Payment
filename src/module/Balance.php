@@ -11,12 +11,12 @@ use Src\Model\Transaction;
  */
 final class Balance implements FeeCalculatable
 {
-    private array $transaction_history = []; // Stores transations for future reference when determining commission
-    private array $fee_history = []; // Stores commissions by transaction_id
+    protected array $transaction_history = []; // Stores transations for future reference when determining commission
+    protected array $fee_history = []; // Stores commissions by transaction_id
 
     public function __construct(
-        private readonly int $user_id,
-        public readonly string $user_type
+        protected readonly int $user_id,
+        protected readonly string $user_type
     ) {}
 
     // Does any transaction related operations (of which there are none, besides commission calculation)
@@ -28,6 +28,18 @@ final class Balance implements FeeCalculatable
         $this->addToTransactionHistory($transaction);
 
         return true;
+    }
+
+    public function getUserId():int {
+        return $this->user_id;
+    }
+
+    public function getUserType():string {
+        return $this->user_type;
+    }
+
+    public function getTransationHistory():array {
+        return $this->transaction_history;
     }
 
     public function getFees():array {
@@ -78,6 +90,7 @@ final class Balance implements FeeCalculatable
             'fee' => $fee,
             'currency' => $transaction->currency 
         ];
+        // pre($this->fee_history);
     }
 
     // Record past transactions as an array so we can calculate fees later on in an optimized way

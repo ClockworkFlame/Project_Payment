@@ -9,7 +9,7 @@ final class ProcessCommissions
     readonly array $csv_data;
     readonly array $user_data;
 
-    public private(set) array $commissions;
+    public private(set) array $fees;
 
     public function __construct() {
         try {
@@ -27,37 +27,38 @@ final class ProcessCommissions
                 $user_balance->transact($transaction);
             }
 
-            if(!empty(($commissions = $user_balance->getFees()))) {
-                foreach($commissions as $commission) {
-                    $this->commissions[$commission['transaction_id']] = $commission;
+            if(!empty(($fees = $user_balance->getFees()))) {
+                foreach($fees as $fee) {
+                    $this->fees[$fee['transaction_id']] = $fee;
                 }
             }
         }
 
+        var_dump($this->fees);
         // $this->printFeesHtml();
     }
 
     public function printFeesHtml():void {
-        $commissions = $this->commissions;
+        $fees = $this->fees;
 
-        usort($commissions, function($a, $b) {
+        usort($fees, function($a, $b) {
             return $a['transaction_id'] <=> $b['transaction_id'];
         });
 
-        foreach($commissions as $commission) {
-            print "Transaction ID: {$commission['transaction_id']} | Fee: " . number_format($commission['fee'], 2) . "<br>";
+        foreach($fees as $fee) {
+            print "Transaction ID: {$fee['transaction_id']} | Fee: " . number_format($fee['fee'], 2) . "<br>";
         }
     }
 
     public function printFees():void {
-        $commissions = $this->commissions;
+        $fees = $this->fees;
 
-        usort($commissions, function($a, $b) {
+        usort($fees, function($a, $b) {
             return $a['transaction_id'] <=> $b['transaction_id'];
         });
 
-        foreach($commissions as $commission) {
-            echo number_format($commission['fee'], 2) . PHP_EOL;
+        foreach($fees as $fee) {
+            echo number_format($fee['fee'], 2) . PHP_EOL;
         }
     }
 

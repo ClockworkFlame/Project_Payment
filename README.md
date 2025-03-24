@@ -8,7 +8,7 @@ Steps to run:
 5- Optional. Project uses hardcoded values for exchange rates. Add Exchangeratesapi key to config/keys.ini to use live exchange - https://app.exchangerate-api.com/
 
 Steps to test:
-???
+1 - Run './vendor/phpunit/phpunit/phpunit' from project root
 
 Notes:
 - Removed friendsofphp/php-cs-fixer package as its not compatible with PHP ^8.0

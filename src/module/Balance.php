@@ -47,22 +47,22 @@ final class Balance implements FeeCalculatable
     }
 
      
-    public function getTransactionHistoryForWeek(int $timestamp):array {
+    public function getTransactionHistoryForWeek(int $timestamp, string $action):array {
         $start_of_week = strtotime('monday this week', $timestamp);
         $start_of_following_week = strtotime('monday next week', $timestamp);
 
         // Filter transactions so we have only the ones for the wanted week
-        $transactions_this_week = array_filter($this->transaction_history, function($transaction) use ($start_of_week, $start_of_following_week) {
-            return $transaction['date_timestamp'] >= $start_of_week && $transaction['date_timestamp'] < $start_of_following_week;
+        $transactions_this_week = array_filter($this->transaction_history, function($transaction) use ($start_of_week, $start_of_following_week, $action) {
+            return $action === $transaction['action'] && $transaction['date_timestamp'] >= $start_of_week && $transaction['date_timestamp'] < $start_of_following_week;
         });
 
         return $transactions_this_week;
     }
 
     // Finds previous transactions for given week and returns the amount transacted in EUR
-    public function getTransactedAmountForWeekEur(int $timestamp):float {
+    public function getTransactedAmountForWeekEur(int $timestamp, string $action):float {
         // Filter transactions so we have only the ones for the wanted week
-        $transactions_this_week = $this->getTransactionHistoryForWeek($timestamp);
+        $transactions_this_week = $this->getTransactionHistoryForWeek($timestamp, $action);
         
         if(empty($transactions_this_week)) {
             return 0.00;
@@ -75,9 +75,8 @@ final class Balance implements FeeCalculatable
                 $converted_amount = CurrencyConverter::convertToEuro($transaction['currency'], $transaction['amount']);
                 $sum += $converted_amount;
             } else {
-                $amount = $transaction['amount'];
+                $sum += $transaction['amount'];
             }
-            $sum += $amount;
         }
 
         return $sum;

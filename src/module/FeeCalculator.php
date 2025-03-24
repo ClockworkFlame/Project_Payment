@@ -2,7 +2,6 @@
 namespace Src\Module;
 
 use Src\Interface\FeeCalculatable;
-use Src\Service\CurrencyConverter;
 use Src\Model\Transaction;
 
 /**
@@ -17,7 +16,7 @@ abstract class FeeCalculator
     public function __construct(readonly FeeCalculatable $balance) {}
 
     public function getDefaultFee():float {
-        return FeeCalculator::DEFAULT_FEE_AMOUNT;
+        return self::DEFAULT_FEE_AMOUNT;
     }
 
     public function getFee(Transaction $transaction):float {

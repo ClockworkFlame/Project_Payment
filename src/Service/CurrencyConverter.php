@@ -3,6 +3,13 @@ namespace Src\Service;
 
 class CurrencyConverter
 {
+    const DEFAULT_CURRENCY = "EUR";
+    const USE_API = false;
+    const TEST_RATES = [
+        "JPY" => 129.53,
+        "USD" => 1.1497,
+    ];
+
     // Limiting usage just to euro due to this being just a side-service to the test app.
     public static function convertToEuro(string $currency, float $amount): float {
         $rates = self::getRates();
@@ -14,17 +21,31 @@ class CurrencyConverter
         return round(($amount / $rates["$currency"]), 3);
     }
 
-    public static function getRates() {
-        if(session_status() === PHP_SESSION_NONE || empty($_SESSION['rates'])){
-            self::cacheRates();
-            echo 1;
+    public static function convertFromEuro(float $amount, string $currency): float {
+        $rates = self::getRates();
+
+        if(empty($rates[$currency])){
+            throw new \Exception("Currency $currency doesnt exist in exchange table");
         }
 
-        return $_SESSION['rates'];
+        $converted = round(($amount * $rates["$currency"]), 3);
+
+        return $converted;
     }
-    
-    private static function cacheRates():void {
-        $_SESSION['rates'] = self::fetchRates();
+
+    // Fetches rates from cache or API
+    public static function getRates() {
+        if(self::USE_API === false || session_status() === PHP_SESSION_NONE || empty($_SESSION['rates'])){
+            if(self::USE_API === true){ 
+                $_SESSION['rates'] = self::fetchRates();
+            } else {
+                $_SESSION['rates'] = self::TEST_RATES;
+            }
+        }
+
+        $rates = $_SESSION['rates'];
+
+        return $rates;
     }
 
     // Havent spent too much time on this module. Found most off it on stackoverflow. I guess this is what Copilot would help with?
@@ -35,7 +56,7 @@ class CurrencyConverter
             throw new \Exception('No API key set for exchange rates.');    
         }
 
-        $req_url = "https://v6.exchangerate-api.com/v6/$key/latest/EUR"; // Yes its locked to Euros.
+        $req_url = "https://v6.exchangerate-api.com/v6/$key/latest/" . CurrencyConverter::DEFAULT_CURRENCY; // Yes its locked to Euros.
         $response_json = file_get_contents($req_url);
 
         if(false !== $response_json) {

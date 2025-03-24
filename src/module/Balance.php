@@ -12,7 +12,7 @@ use Src\Model\Transaction;
 final class Balance implements FeeCalculatable
 {
     private array $transaction_history = []; // Stores transations for future reference when determining commission
-    private array $tax_history = []; // Stores commissions by transaction_id
+    private array $fee_history = []; // Stores commissions by transaction_id
 
     public function __construct(
         private readonly int $user_id,
@@ -20,13 +20,13 @@ final class Balance implements FeeCalculatable
     ) {}
 
     // Does any transaction related operations (of which there are none, besides commission calculation)
-    // Tempted to make a 'Transaction' model to pass around, but It would overly complicate this task imo.
     public function transact(Transaction $transaction):bool {
-        $tax_calculator = FeeCalculatorFactory::getFeeCalculator($this);
-        $fee = $tax_calculator->getFee($transaction);
+        $fee_calculator = FeeCalculatorFactory::getFeeCalculator($this);
+        $fee = $fee_calculator->getFee($transaction);
 
-        $this->addToTaxHistory($transaction, $fee);
+        $this->addToFeeHistory($transaction, $fee);
         $this->addToTransactionHistory($transaction);
+
         return true;
     }
 
@@ -43,45 +43,65 @@ final class Balance implements FeeCalculatable
     }
 
     public function getCommissions():array {
-        return $this->tax_history;
+        return $this->fee_history;
     }
 
      
-    
+    public function getTransactionHistoryForWeek(int $timestamp):array {
+        $start_of_week = strtotime('monday this week', $timestamp);
+        $start_of_following_week = strtotime('monday next week', $timestamp);
 
-    // Gets us the transaction total amount for the given day of the week
-    public function getTransactedAmountForWeek(int $timestamp):float {
+        // Filter transactions so we have only the ones for the wanted week
+        $transactions_this_week = array_filter($this->transaction_history, function($transaction) use ($start_of_week, $start_of_following_week) {
+            return $transaction['date_timestamp'] >= $start_of_week && $transaction['date_timestamp'] < $start_of_following_week;
+        });
+
+        return $transactions_this_week;
+    }
+
+    // Finds previous transactions for given week and returns the amount transacted in EUR
+    public function getTransactedAmountForWeekEur(int $timestamp):float {
+        // Filter transactions so we have only the ones for the wanted week
+        $transactions_this_week = $this->getTransactionHistoryForWeek($timestamp);
+        
+        if(empty($transactions_this_week)) {
+            return 0.00;
+        }
+        
         $sum = 0;
-        foreach($this->transaction_history as $transaction) {
-            $start_of_week = strtotime('monday this week', strtotime($transaction['date']));
-
+        // Sum up the total amount transacted for wanted week, in euro.
+        foreach($transactions_this_week as $transaction) {
             if($transaction['currency'] !== Balance::DEFAULT_CURRENCY) {
                 $converted_amount = CurrencyConverter::convertToEuro($transaction['currency'], $transaction['amount']);
                 $sum += $converted_amount;
             } else {
                 $amount = $transaction['amount'];
             }
-
             $sum += $amount;
         }
+
         return $sum;
     }
 
-    public function addToTaxHistory(Transaction $transaction):void {
-        $this->tax_history[] = [
-            'transaction_id' => $$transaction->id,
-            'amount' => $$transaction->amount,
-            'currency' => $$transaction->currency 
+    // Record fees to print out in the future
+    public function addToFeeHistory(Transaction $transaction, float $fee):void {
+        $this->fee_history[] = [
+            'transaction_id' => $transaction->id,
+            'amount' => $transaction->amount,
+            'fee' => $fee,
+            'currency' => $transaction->currency 
         ];
-        pre($this->tax_history);
+        // pre($this->fee_history);
     }
 
+    // Record past transactions as an array so we can calculate fees later on in an optimized way
     private function addToTransactionHistory(Transaction $transaction):void {
         $this->transaction_history[] = [
             'id' => $transaction->id,
             'action' => $transaction->action,
             'amount' => $transaction->amount,
             'date' => $transaction->date,
+            'date_timestamp' => $transaction->date_timestamp,
             'currency' => $transaction->currency
         ];
     }

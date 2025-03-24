@@ -49,4 +49,4 @@ Planned Schema:
     - overrides FeeCalculator::calculateTax(Balance $balance)
 - Singleton Display
     - param taxes [array]
-    - addToTaxHistory ($action_id, $tax_amount)
+    - addToFeeHistory ($action_id, $tax_amount)

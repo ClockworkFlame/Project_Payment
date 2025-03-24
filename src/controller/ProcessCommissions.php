@@ -46,7 +46,7 @@ final class ProcessCommissions
         });
 
         foreach($commissions as $commission) {
-            print "Transaction ID: {$commission['transaction_id']} | Fee: {$commission['amount']} {$commission['currency']}<br>";
+            print "Transaction ID: {$commission['transaction_id']} | Fee: {$commission['fee']} {$commission['currency']} | Amount: {$commission['amount']}<br>";
         }
     }
 

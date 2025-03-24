@@ -17,30 +17,35 @@ final class PrivateFeeCalculator extends FeeCalculator
     }
 
     protected function calculateWithdrawFee(Transaction $transaction):float {
-        $this->hasRemainingWeeklyFree();
+        $weekly_free_amount = $this->getRemainingWeeklyFree($transaction);
+        $feeable_amount = $transaction->amount; // Amount we'll calculate fee for. It can be overwritten.
 
-        $fee_percentage = BusinessFeeCalculator::WITHDRAW_FEE;
+        if($weekly_free_amount > 0) { // If user hasnt used up their weekly free amount
+            if($transaction->amount < $weekly_free_amount) { // If the transaction is within the weekly free amount
+                return BusinessFeeCalculator::DEFAULT_FEE_AMOUNT;
+            } else { // Else calculate the remainder that we'll need to tax normally
+                $feeable_amount = $transaction->amount - $weekly_free_amount;
+            }
+        }
 
-
-
-        $fee = round($transaction->amount * $fee_percentage) / 100;
+        $fee = round($feeable_amount * BusinessFeeCalculator::WITHDRAW_FEE) / 100;
         return $fee;
     }
 
 
-    private function hasRemainingWeeklyFree(): float {
-        $transaction_history = $this->balance->getTransationHistory();
-        $transaction_amount_this_week_eur = $this->balance->getTransactedAmountForWeek();
-        pre($tramsaction_history_total_eur);
+    // Calculates remaining free of fee amount for the week
+    private function getRemainingWeeklyFree(Transaction $transaction): float {
+        $transaction_amount_this_week_eur = $this->balance->getTransactedAmountForWeekEur($transaction->date_timestamp) ?? 0.00;
+        $transactions_this_week = $this->getTransactionHistoryForWeek($transaction->date_timestamp);
 
+        $weekly_free = 0.00;
+        if($transaction_amount_this_week_eur < PrivateFeeCalculator::WEEKLY_FREE_AMOUNT ){
+            if(count($transactions_this_week) < PrivateFeeCalculator::WEEKLY_FREE_COUNT) {
+                $weekly_free = PrivateFeeCalculator::WEEKLY_FREE_AMOUNT - $transaction_amount_this_week_eur;
+            } 
+        } 
 
-        if($tramsaction_history_total_eur < PrivateFeeCalculator::WEEKLY_FREE_AMOUNT 
-            && count($transaction_history) < PrivateFeeCalculator::WEEKLY_FREE_COUNT
-        ){
-            return PrivateFeeCalculator::WEEKLY_FREE_AMOUNT;
-        }
-
-        return false;
+        return $weekly_free;
     }
 }
 

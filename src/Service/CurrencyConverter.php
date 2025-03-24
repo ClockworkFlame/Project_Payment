@@ -27,7 +27,7 @@ class CurrencyConverter
         $_SESSION['rates'] = self::fetchRates();
     }
 
-    // Havent spent too much time on this module. Found most off it on stackoverflow. I guess this is what AI is used for?
+    // Havent spent too much time on this module. Found most off it on stackoverflow. I guess this is what Copilot would help with?
     private static function fetchRates():array {
         $key = parse_ini_file("config/keys.ini")['exchangeragesapi']; // Fetch API key
 

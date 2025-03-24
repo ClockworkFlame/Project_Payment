@@ -2,6 +2,7 @@
 namespace Src\Module;
 
 use Src\Module\FeeCalculator;
+use Src\Model\Transaction;
 
 final class PrivateFeeCalculator extends FeeCalculator
 {
@@ -9,27 +10,27 @@ final class PrivateFeeCalculator extends FeeCalculator
     const WEEKLY_FREE_AMOUNT = 1000; // Euro
     const WEEKLY_FREE_COUNT = 3;
 
-    protected function calculateDepositFee(float $amount):float {
+    protected function calculateDepositFee(Transaction $transaction):float {
         $fee_percentage = BusinessFeeCalculator::DEPOSIT_FEE;
-        $fee = round($amount * $fee_percentage) / 100;
+        $fee = round($transaction->amount * $fee_percentage) / 100;
         return $fee;
     }
 
-    protected function calculateWithdrawFee(float $amount):float {
+    protected function calculateWithdrawFee(Transaction $transaction):float {
         $this->hasRemainingWeeklyFree();
 
         $fee_percentage = BusinessFeeCalculator::WITHDRAW_FEE;
 
 
 
-        $fee = round($amount * $fee_percentage) / 100;
+        $fee = round($transaction->amount * $fee_percentage) / 100;
         return $fee;
     }
 
 
     private function hasRemainingWeeklyFree(): float {
         $transaction_history = $this->balance->getTransationHistory();
-        $tramsaction_history_total_eur = $this->balance->getTransactionHistoryTotalEur();
+        $transaction_amount_this_week_eur = $this->balance->getTransactedAmountForWeek();
         pre($tramsaction_history_total_eur);
 
 

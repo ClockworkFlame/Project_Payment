@@ -2,20 +2,21 @@
 namespace Src\Module;
 
 use Src\Module\FeeCalculator;
+use Src\Model\Transaction;
 
 final class BusinessFeeCalculator extends FeeCalculator
 {
     const WITHDRAW_FEE = 0.5;
 
-    protected function calculateDepositFee(float $amount):float {
+    protected function calculateDepositFee(Transaction $transaction):float {
         $fee_percentage = BusinessFeeCalculator::DEPOSIT_FEE;
-        $fee = round($amount * $fee_percentage) / 100;
+        $fee = round($transaction->amount * $fee_percentage) / 100;
         return $fee;
     }
 
-    protected function calculateWithdrawFee(float $amount):float {
+    protected function calculateWithdrawFee(Transaction $transaction):float {
         $fee_percentage = BusinessFeeCalculator::WITHDRAW_FEE;
-        $fee = round($amount * $fee_percentage) / 100;
+        $fee = round($transaction->amount * $fee_percentage) / 100;
         return $fee;
     }
 }

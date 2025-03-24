@@ -2,14 +2,13 @@
 namespace Src\Service;
 
 use Src\Interface\DataImporter as DataImporterInterface;
+use Src\Model\Transaction;
 
 class DataImporter implements DataImporterInterface
 {
     const FILENAME = 'input.csv'; // Dont want to hardcode but its just an test app.
 
-    /**
-     * TODO: Verify data fits mold.
-     */
+    // Imports transaction data from CSV
     public static function importData():array {
         if(!file_exists(self::FILENAME)) {
             throw new \Exception('CSV file not found');
@@ -17,8 +16,19 @@ class DataImporter implements DataImporterInterface
 
         $handle = fopen('input.csv','r');
         $csv_data = [];
+        $id_i = 0;
         while(($data = fgetcsv($handle, escape:"\\") ) !== FALSE ) {
-            $csv_data[] = $data;
+            $csv_data[] = new Transaction(
+                id: $id_i,
+                date: $data[0],
+                user_id: $data[1],
+                user_type: $data[2],
+                action: $data[3],
+                amount: $data[4],
+                currency: $data[5],
+            );
+
+            $id_i++;
         }
 
         if(empty($csv_data)){
@@ -28,26 +38,27 @@ class DataImporter implements DataImporterInterface
         return $csv_data;
     }
 
-    // Adds an internal array index to each row. Either this or making a whole ORM which Id rather not.
-    public static function indexArray(array $array):array {
-        foreach($array as $key => $row) {
-            $array[$key][6] = $key;
-        }
-        return $array;
-    }
-
-    // Exports user data from CSV. That is, assuming that a user can be EITHER private or public.
+    // Imports user data from transactions
     public static function importUserData():array {
         $data = self::importData();
 
         $user_data = [];
-        foreach($data as $row) {
-            $user_data[$row[1]] = [
-                'id' => $row[1],
-                'type' => $row[2],
+        foreach($data as $transaction) {
+            $user_data[$transaction->user_id]= [
+                'id' => $transaction->user_id,
+                'type' => $transaction->user_type,
             ];
         }
 
         return $user_data;
+    }
+
+    // Orders transactions by user_id for easier processing
+    public static function orderByUser(array $array):array {
+        $return = array();
+        foreach($array as $transaction) {
+            $return[$transaction->user_id][] = $transaction;
+        }
+        return $return;
     }
 }

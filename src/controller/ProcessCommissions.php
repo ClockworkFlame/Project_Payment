@@ -13,7 +13,7 @@ final class ProcessCommissions
 
     public function __construct() {
         try {
-            $this->csv_data = $this->orderByUser(DataImporter::indexArray(DataImporter::importData()));
+            $this->csv_data = DataImporter::orderByUser(DataImporter::importData());
             $this->user_data = DataImporter::importUserData();
         } catch (\Exception $e) {
             print $e->getMessage();
@@ -35,16 +35,6 @@ final class ProcessCommissions
         }
 
         $this->printFeesById();
-    }
-
-    // Not sure where to put this really... But Id rather focus on the rest of the task due to my limited time.
-    // This just groups the raw CSV data by user.
-    private function orderByUser(array $array):array {
-        $return = array();
-        foreach($array as $val) {
-            $return[$val[1]][] = $val;
-        }
-        return $return;
     }
 
     public function printFeesById():void {

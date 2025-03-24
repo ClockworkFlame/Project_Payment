@@ -4,6 +4,7 @@ namespace Src\Module;
 use Src\Interface\FeeCalculatable;
 use Src\Module\FeeCalculatorFactory;
 use Src\Service\CurrencyConverter;
+use Src\Model\Transaction;
 
 /**
  * Processes a user's operations. Acts as a cache for all of their transations so we can calculate fees further on.
@@ -20,15 +21,12 @@ final class Balance implements FeeCalculatable
 
     // Does any transaction related operations (of which there are none, besides commission calculation)
     // Tempted to make a 'Transaction' model to pass around, but It would overly complicate this task imo.
-    public function transact(array $transaction):bool {
-        list($date, $user_id, $type, $action, $amount, $currency, $id) = $transaction;
-
+    public function transact(Transaction $transaction):bool {
         $tax_calculator = FeeCalculatorFactory::getFeeCalculator($this);
-        // pre($transaction);
-        // pre($tax_calculator);
+        $fee = $tax_calculator->getFee($transaction);
 
-        $this->addToTaxHistory($id, $tax_calculator->getFee($action, $amount, $currency), $currency);
-        $this->addToTransactionHistory($id, $action, $amount, $currency, $date);
+        $this->addToTaxHistory($transaction, $fee);
+        $this->addToTransactionHistory($transaction);
         return true;
     }
 
@@ -51,11 +49,11 @@ final class Balance implements FeeCalculatable
      
     
 
-    // Gets us the transaction total amount
-    public function getTransactionHistoryTotalEur():float {
+    // Gets us the transaction total amount for the given day of the week
+    public function getTransactedAmountForWeek(int $timestamp):float {
         $sum = 0;
         foreach($this->transaction_history as $transaction) {
-            $start_of_week = strtotime('monday this week', strtotime($transaction['date']))
+            $start_of_week = strtotime('monday this week', strtotime($transaction['date']));
 
             if($transaction['currency'] !== Balance::DEFAULT_CURRENCY) {
                 $converted_amount = CurrencyConverter::convertToEuro($transaction['currency'], $transaction['amount']);
@@ -69,22 +67,22 @@ final class Balance implements FeeCalculatable
         return $sum;
     }
 
-    public function addToTaxHistory(int $id, float $amount, string $currency):void {
+    public function addToTaxHistory(Transaction $transaction):void {
         $this->tax_history[] = [
-            'transaction_id' => $id,
-            'amount' => $amount,
-            'currency' => $currency 
+            'transaction_id' => $$transaction->id,
+            'amount' => $$transaction->amount,
+            'currency' => $$transaction->currency 
         ];
         pre($this->tax_history);
     }
 
-    private function addToTransactionHistory(int $id, string $action, float $amount, string $currency, string $date):void {
+    private function addToTransactionHistory(Transaction $transaction):void {
         $this->transaction_history[] = [
-            'id' => $id,
-            'action' => $action,
-            'amount' => $amount,
-            'date' => $date,
-            'currency' => $currency
+            'id' => $transaction->id,
+            'action' => $transaction->action,
+            'amount' => $transaction->amount,
+            'date' => $transaction->date,
+            'currency' => $transaction->currency
         ];
     }
 }

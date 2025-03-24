@@ -3,6 +3,7 @@ namespace Src\Module;
 
 use Src\Interface\FeeCalculatable;
 use Src\Service\CurrencyConverter;
+use Src\Model\Transaction;
 
 /**
  * Abstract class for calculating transaction fees.
@@ -19,10 +20,10 @@ abstract class FeeCalculator
         return FeeCalculator::DEFAULT_FEE_AMOUNT;
     }
 
-    public function getFee(string $action, float $amount, string $currency):float {
-        $fee = match($action) {
-            'deposit' => $this->calculateDepositFee($amount),
-            'withdraw' => $this->calculateWithdrawFee($amount, $currency),
+    public function getFee(Transaction $transaction):float {
+        $fee = match($transaction->action) {
+            'deposit' => $this->calculateDepositFee($transaction),
+            'withdraw' => $this->calculateWithdrawFee($transaction),
         };
 
         //throw exception if fee isnt float
@@ -34,7 +35,7 @@ abstract class FeeCalculator
         return $fee;
     }
 
-    abstract protected function calculateDepositFee(float $amount):float;
+    abstract protected function calculateDepositFee(Transaction $transaction):float;
 
-    abstract protected function calculateWithdrawFee(float $amount):float;
+    abstract protected function calculateWithdrawFee(Transaction $transaction):float;
 }

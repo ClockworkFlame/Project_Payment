@@ -34,7 +34,7 @@ final class ProcessCommissions
             }
         }
 
-        $this->printFeesHtml();
+        // $this->printFeesHtml();
     }
 
     public function printFeesHtml():void {

@@ -6,7 +6,7 @@ use Src\Model\Transaction;
 
 class DataImporter implements DataImporterInterface
 {
-    const FILENAME = 'input.csv'; // Dont want to hardcode but its just an test app.
+    const FILENAME = 'input.csv'; // Dont want to hardcode but its just a test app.
 
     // Imports transaction data from CSV
     public static function importData():array {

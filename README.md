@@ -4,7 +4,7 @@ Steps to run:
 1- Have docker installed
 2- Navigate to root project folder
 3- Run 'docker-compose up'
-4- Navigate to http://localhost:8080/
+4- Navigate to http://localhost:8080/ OR run though command line 'php index.php'
 5- Optional. Project uses hardcoded values for exchange rates. Add Exchangeratesapi key to config/keys.ini to use live exchange - https://app.exchangerate-api.com/
 
 Steps to test:

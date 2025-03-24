@@ -8,4 +8,6 @@ interface DataImporter
     public static function importData():array;
 
     public static function importUserData():array;
+
+    public static function orderByUser(array $array):array;
 }

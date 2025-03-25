@@ -1,4 +1,7 @@
-Dockerized it cause why not.
+Tech interview task that accepts a CSV of transactions (input.csv) and calculates their respective commission fees.
+Further details about their calculation can be found in task-description.md.
+Task follows specific constraints set by the interviewing company, such as 'one' unit test and no database solutions.
+Ive also prioritized work over the meat of the project (calculating fees), rather than service modules like data importing and currency conversion API calls.
 
 Steps to run:
 - Run 'composer install' to generate vendor and dependencies
@@ -12,6 +15,7 @@ Steps to test:
 - Actually just do 'composer run test'
 
 Notes:
+- Dockerized it cause why not.
 - Removed friendsofphp/php-cs-fixer package as its not compatible with PHP ^8.0
 - Changed used PHPUnit version to 9, same issue as ^^^
 - Not too happy with generating a new FeeCalculator class for each transaction. Thought about converting them to statics but Im not sure if thats optimal.

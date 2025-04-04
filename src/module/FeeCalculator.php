@@ -3,12 +3,13 @@ namespace Src\Module;
 
 use Src\Interface\FeeCalculatable;
 use Src\Model\Transaction;
+use Src\Interface\FeeCalculator as FeeCalculatorInterface;
 
 /**
  * Abstract class for calculating transaction fees.
  * Logically we wont need more than 2 child classes as all transactions are either deposit/withdraw, right?
  */
-abstract class FeeCalculator
+abstract class FeeCalculator implements FeeCalculatorInterface
 {
     const DEFAULT_FEE_AMOUNT = 0.00;
     const DEPOSIT_FEE = 0.03;

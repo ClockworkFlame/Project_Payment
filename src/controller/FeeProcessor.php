@@ -34,7 +34,7 @@ final class FeeProcessor
             $user_balance = new BalanceHistory($user_id, $this->user_data[$user_id]['type']);
 
             foreach($transactions as $transaction) {
-                $user_balance->transact($transaction);
+                $user_balance->recordTransaction($transaction);
             }
 
             if(!empty(($fees = $user_balance->getFees()))) {

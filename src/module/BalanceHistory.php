@@ -19,12 +19,9 @@ final class BalanceHistory implements FeeCalculatable
         protected readonly string $user_type
     ) {}
 
-    // Does any transaction related operations (of which there are none, besides commission calculation)
-    public function transact(Transaction $transaction):bool {
-        $fee_calculator = FeeCalculatorFactory::getFeeCalculator($this);
-        $fee = $fee_calculator->getFee($transaction);
-
-        $this->addToFeeHistory($transaction, $fee);
+    // Records transaction, and its relative fee.
+    public function recordTransaction(Transaction $transaction):bool {
+        $this->addToFeeHistory($transaction, $this->getFee($transaction));
         $this->addToTransactionHistory($transaction);
 
         return true;
@@ -103,5 +100,11 @@ final class BalanceHistory implements FeeCalculatable
             'date_timestamp' => $transaction->date_timestamp,
             'currency' => $transaction->currency
         ];
+    }
+
+    // Creates a fee calculator class via factory, and returns the fee amount for the transaction
+    private function getFee(Transaction $transaction):float {
+        $fee_calculator = FeeCalculatorFactory::getFeeCalculator($this);
+        return $fee_calculator->getFee($transaction);
     }
 }

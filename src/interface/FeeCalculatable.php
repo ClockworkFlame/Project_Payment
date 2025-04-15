@@ -1,7 +1,8 @@
 <?php 
 namespace Src\Interface;
 
-// Interface guaranteeing all necessary data for calculating fees is present
+// Interface guaranteeing all necessary data for calculating fees is present.
+// Yes its bloated, but without ORMing the User data (due to project criteria), it would be a massive overcomplication to redesign how we pull UserId and UserType
 interface FeeCalculatable
 {
     const DEFAULT_CURRENCY = 'EUR';

@@ -2,9 +2,9 @@
 session_start();
 require_once 'vendor/autoload.php';
 
-use Src\Controller\ProcessCommissions;
+use Src\Controller\ProcessFees;
 
-$pc = new ProcessCommissions;
+$pc = new ProcessFees;
 
 if(php_sapi_name() == "cli") {
     $pc->printFees();

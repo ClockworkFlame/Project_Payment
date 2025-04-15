@@ -4,7 +4,7 @@ namespace Src\Controller;
 use Src\Service\DataImporter;
 use Src\Module\Balance;
 
-final class ProcessCommissions
+final class ProcessFees
 {
     readonly array $csv_data;
     readonly array $user_data;
@@ -20,6 +20,13 @@ final class ProcessCommissions
             exit;
         }
 
+        $this->process();
+    }
+
+    /**
+     * Does all of the commission 'fee' processing.
+     */
+    private function process():void {
         foreach($this->csv_data as $user_id => $transactions) {
             $user_balance = new Balance($user_id, $this->user_data[$user_id]['type']);
 
@@ -33,8 +40,6 @@ final class ProcessCommissions
                 }
             }
         }
-
-        // $this->printFeesHtml();
     }
 
     public function printFeesHtml():void {

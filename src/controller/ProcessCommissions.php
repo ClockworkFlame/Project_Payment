@@ -2,8 +2,11 @@
 namespace Src\Controller;
 
 use Src\Service\DataImporter;
-use Src\Module\Balance;
+use Src\Module\BalanceHistory;
 
+// Supposedly liberally stating that classes are final is bad code design... somehow? 
+// Though I doubt the reviewer on this as I cant find a lot of stackoverflow comments to support his opinion.
+// Im open to discussion though.
 final class ProcessFees
 {
     readonly array $csv_data;
@@ -28,7 +31,7 @@ final class ProcessFees
      */
     private function process():void {
         foreach($this->csv_data as $user_id => $transactions) {
-            $user_balance = new Balance($user_id, $this->user_data[$user_id]['type']);
+            $user_balance = new BalanceHistory($user_id, $this->user_data[$user_id]['type']);
 
             foreach($transactions as $transaction) {
                 $user_balance->transact($transaction);

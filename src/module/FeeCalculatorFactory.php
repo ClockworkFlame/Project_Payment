@@ -8,12 +8,11 @@ use Src\Enum\UserType;
 use Src\Interface\FeeCalculator as FeeCalculatorInterface;
 
 /**
- * There could be any nummber of client types that necessitate their own fee calculation classes.
- * Futureproofing with a factory.
+ * Factory class for creating fee calculators based on user type.
+ * Just one method, however I think it should be its separate class as I can see it being futher developed in the future.
  */
 class FeeCalculatorFactory
 {
-    // This should dynamically call classes, but Im not sure if thats an antipattern or not so Ill keep it concrete for now.
     public static function getFeeCalculator(FeeCalculatable $balance): FeeCalculatorInterface {
         if($balance->getUserType() === UserType::USER_BUSINESS->value) {
             return new BusinessFeeCalculator($balance);

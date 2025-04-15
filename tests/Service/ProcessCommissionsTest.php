@@ -7,7 +7,7 @@ namespace Project\Tests;
 use PHPUnit\Framework\TestCase;
 use Src\Controller\ProcessFees;
 
-class ProcessComissionsTest extends TestCase
+class ProcessFeesTest extends TestCase
 {
     public function testFeeCalculation()
     {

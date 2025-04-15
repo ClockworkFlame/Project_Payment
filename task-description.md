@@ -33,20 +33,20 @@ Planned Schema:
     - static convertTo($amount,$current_currency,$to_currency):array
 - Static Importer
     - static readCsv($filename):array (create an integer index)
-- Balance
+- BalanceHistory
     - param withdrawn_history [stores dates]
     - param withdrawn_amount
     - param client_type //maybe put in user class?
     - withdraw
     - deposit
 - Abstract FeeCalculator
-    - static calculate(Balance $balance): float
+    - static calculate(BalanceHistory $balance): float
     - private meetsDailyWithdrawalCriteria
     - private meetsWithdrawnAmountCriteria
 - WithdrawTaxCalculator extends FeeCalculator (put tax conditions inside here)
-    - overrides FeeCalculator::calculateTax(Balance $balance)
+    - overrides FeeCalculator::calculateTax(BalanceHistory $balance)
 - DepositTaxCalculator extends FeeCalculator (put tax conditions inside here)
-    - overrides FeeCalculator::calculateTax(Balance $balance)
+    - overrides FeeCalculator::calculateTax(BalanceHistory $balance)
 - Singleton Display
     - param taxes [array]
     - addToFeeHistory ($action_id, $tax_amount)

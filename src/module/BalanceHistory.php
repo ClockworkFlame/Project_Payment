@@ -9,7 +9,7 @@ use Src\Model\Transaction;
 /**
  * Processes a user's operations. Acts as a cache for all of their transations so we can calculate fees further on.
  */
-final class Balance implements FeeCalculatable
+final class BalanceHistory implements FeeCalculatable
 {
     protected array $transaction_history = []; // Stores transations for future reference when determining commission
     protected array $fee_history = []; // Stores commissions by transaction_id
@@ -71,7 +71,7 @@ final class Balance implements FeeCalculatable
         $sum = 0;
         // Sum up the total amount transacted for wanted week, in euro.
         foreach($transactions_this_week as $transaction) {
-            if($transaction['currency'] !== Balance::DEFAULT_CURRENCY) {
+            if($transaction['currency'] !== BalanceHistory::DEFAULT_CURRENCY) {
                 $converted_amount = CurrencyConverter::convertToEuro($transaction['currency'], $transaction['amount']);
                 $sum += $converted_amount;
             } else {

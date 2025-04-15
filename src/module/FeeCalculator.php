@@ -7,7 +7,6 @@ use Src\Interface\FeeCalculator as FeeCalculatorInterface;
 
 /**
  * Abstract class for calculating transaction fees.
- * Logically we wont need more than 2 child classes as all transactions are either deposit/withdraw, right?
  */
 abstract class FeeCalculator implements FeeCalculatorInterface
 {

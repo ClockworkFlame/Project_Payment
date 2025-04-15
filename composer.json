@@ -4,6 +4,9 @@
     "keywords": [],
     "type": "project",
     "autoload": {
+        "files": [
+            "src/helper/General.php"
+        ],
         "psr-4": {
             "Src\\": "src"
         }

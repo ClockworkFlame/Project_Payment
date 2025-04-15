@@ -11,12 +11,3 @@ if(php_sapi_name() == "cli") {
 } else {
     $pc->printFeesHtml();
 }
-
-// Helper function for dumping
-function pre($q) {
-    echo '<pre>';
-    print_r($q);
-    echo '</pre>';
-}
-
-

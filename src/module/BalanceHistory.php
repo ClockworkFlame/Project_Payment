@@ -14,6 +14,8 @@ final class BalanceHistory implements FeeCalculatable
     protected array $transaction_history = []; // Stores transations for future reference when determining commission
     protected array $fee_history = []; // Stores commissions by transaction_id
 
+    // TODO: Create a User entity class as this class shouldnt be storing and paassing down its parameters directly. 
+    // However without a database, ORM'ing it seems like an overcomplication.
     public function __construct(
         protected readonly int $user_id,
         protected readonly string $user_type

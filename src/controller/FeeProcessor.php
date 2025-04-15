@@ -7,7 +7,7 @@ use Src\Module\BalanceHistory;
 // Supposedly liberally stating that classes are final is bad code design... somehow? 
 // Though I doubt the reviewer on this as I cant find a lot of stackoverflow comments to support his opinion.
 // Im open to discussion though.
-final class ProcessFees
+final class FeeProcessor
 {
     readonly array $csv_data;
     readonly array $user_data;

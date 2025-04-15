@@ -2,12 +2,12 @@
 session_start();
 require_once 'vendor/autoload.php';
 
-use Src\Controller\ProcessFees;
+use Src\Controller\FeeProcessor;
 
-$pc = new ProcessFees;
+$fp = new FeeProcessor;
 
 if(php_sapi_name() == "cli") {
-    $pc->printFees();
+    $fp->printFees();
 } else {
-    $pc->printFeesHtml();
+    $fp->printFeesHtml();
 }

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Project\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Src\Controller\ProcessFees;
+use Src\Controller\FeeProcessor;
 
-class ProcessFeesTest extends TestCase
+class FeeProcessorTest extends TestCase
 {
     public function testFeeCalculation()
     {
-        $pc = new ProcessFees();
+        $pc = new FeeProcessor();
 
         $result = [ 
             0 => [ 
